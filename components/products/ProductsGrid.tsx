@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { getAllCategories } from "@/lib/products";
 import ProductCard from "@/components/products/ProductCard";
+import Pagination from "@/components/products/Pagination";
 
 interface ProductsGridProps {
   products: Product[];
 }
+
+const PAGE_SIZE = 24;
 
 const container = {
   hidden: {},
@@ -29,8 +32,12 @@ const categories = getAllCategories();
 export default function ProductsGrid({ products }: ProductsGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const total = products.length;
+  // Reset to page 1 whenever filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategory]);
 
   const filtered = products.filter((p) => {
     const matchesSearch = p.name
@@ -40,6 +47,18 @@ export default function ProductsGrid({ products }: ProductsGridProps) {
       selectedCategory === "" || p.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const paginated = filtered.slice(start, start + PAGE_SIZE);
+
+  const rangeStart = filtered.length === 0 ? 0 : start + 1;
+  const rangeEnd = Math.min(start + PAGE_SIZE, filtered.length);
+
+  function handlePageChange(page: number) {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   return (
     <section className="py-12 sm:py-16 bg-slate-50 min-h-screen">
@@ -96,27 +115,44 @@ export default function ProductsGrid({ products }: ProductsGridProps) {
           <p className="text-sm text-slate-500 whitespace-nowrap ml-auto">
             Showing{" "}
             <span className="font-semibold text-slate-900">
+              {filtered.length === 0 ? "0" : `${rangeStart}–${rangeEnd}`}
+            </span>{" "}
+            of{" "}
+            <span className="font-semibold text-slate-900">
               {filtered.length}
             </span>{" "}
-            of {total} products
+            products
           </p>
         </div>
 
         {/* Grid or Empty State */}
         {filtered.length > 0 ? (
-          <motion.div
-            key={`${searchQuery}-${selectedCategory}`}
-            variants={container}
-            initial="hidden"
-            animate="show"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
-            {filtered.map((product) => (
-              <motion.div key={product.id} variants={item}>
-                <ProductCard product={product} />
-              </motion.div>
-            ))}
-          </motion.div>
+          <>
+            <motion.div
+              key={`${searchQuery}-${selectedCategory}-${currentPage}`}
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            >
+              {paginated.map((product) => (
+                <motion.div key={product.id} variants={item}>
+                  <ProductCard product={product} />
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-10 flex justify-center">
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
+          </>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 text-center text-slate-400">
             <p className="text-lg font-semibold text-slate-600 mb-1">
