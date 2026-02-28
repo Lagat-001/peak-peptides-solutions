@@ -25,11 +25,12 @@ const item = {
 };
 
 const categories = getAllCategories();
-const TOTAL = 24;
 
 export default function ProductsGrid({ products }: ProductsGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+
+  const total = products.length;
 
   const filtered = products.filter((p) => {
     const matchesSearch = p.name
@@ -97,7 +98,7 @@ export default function ProductsGrid({ products }: ProductsGridProps) {
             <span className="font-semibold text-slate-900">
               {filtered.length}
             </span>{" "}
-            of {TOTAL} products
+            of {total} products
           </p>
         </div>
 
