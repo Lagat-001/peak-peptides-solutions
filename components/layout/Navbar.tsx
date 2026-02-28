@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
+  { label: "Home", href: "/" },
   { label: "Products", href: "/products" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },

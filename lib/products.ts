@@ -77,7 +77,7 @@ export const products: Product[] = [
     fullDescription: "Full research description — to be added from original product page.",
     disclaimer: DISCLAIMER,
     imageFilename: "tesamorelin.jpg",
-    featured: false,
+    featured: true,
     inStock: true,
   },
   {
@@ -115,7 +115,7 @@ export const products: Product[] = [
     fullDescription: "Full research description — to be added from original product page.",
     disclaimer: DISCLAIMER,
     imageFilename: "ipamorelin-acetate.jpg",
-    featured: false,
+    featured: true,
     inStock: true,
   },
   {
@@ -229,7 +229,7 @@ export const products: Product[] = [
     fullDescription: "Full research description — to be added from original product page.",
     disclaimer: DISCLAIMER,
     imageFilename: "thymosin-alpha1.jpg",
-    featured: false,
+    featured: true,
     inStock: true,
   },
   {
@@ -248,7 +248,7 @@ export const products: Product[] = [
     fullDescription: "Full research description — to be added from original product page.",
     disclaimer: DISCLAIMER,
     imageFilename: "selank.jpg",
-    featured: false,
+    featured: true,
     inStock: true,
   },
   {
@@ -305,7 +305,7 @@ export const products: Product[] = [
     fullDescription: "Full research description — to be added from original product page.",
     disclaimer: DISCLAIMER,
     imageFilename: "fragment7691.jpg",
-    featured: false,
+    featured: true,
     inStock: true,
   },
   {
@@ -362,7 +362,7 @@ export const products: Product[] = [
     fullDescription: "Full research description — to be added from original product page.",
     disclaimer: DISCLAIMER,
     imageFilename: "semax.jpg",
-    featured: false,
+    featured: true,
     inStock: true,
   },
   {
@@ -381,7 +381,7 @@ export const products: Product[] = [
     fullDescription: "Full research description — to be added from original product page.",
     disclaimer: DISCLAIMER,
     imageFilename: "cjc295.jpg",
-    featured: false,
+    featured: true,
     inStock: true,
   },
   {
@@ -400,7 +400,7 @@ export const products: Product[] = [
     fullDescription: "Full research description — to be added from original product page.",
     disclaimer: DISCLAIMER,
     imageFilename: "bpc57.jpg",
-    featured: false,
+    featured: true,
     inStock: true,
   },
   {
