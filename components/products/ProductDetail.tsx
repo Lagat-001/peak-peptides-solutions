@@ -20,13 +20,15 @@ const categoryColors: Record<string, string> = {
 };
 
 const specsConfig: { label: string; key: keyof Product }[] = [
-  { label: "Purity", key: "purity" },
-  { label: "Form", key: "form" },
-  { label: "Storage", key: "storage" },
-  { label: "Solubility", key: "solubility" },
-  { label: "Sequence", key: "sequence" },
+  { label: "CAS Number",        key: "casNumber" },
+  { label: "Purity",            key: "purity" },
+  { label: "Form",              key: "form" },
+  { label: "Storage",           key: "storage" },
+  { label: "Solubility",        key: "solubility" },
+  { label: "Target",            key: "target" },
+  { label: "Sequence",          key: "sequence" },
   { label: "Molecular Formula", key: "molecularFormula" },
-  { label: "Molecular Weight", key: "molecularWeight" },
+  { label: "Molecular Weight",  key: "molecularWeight" },
 ];
 
 const containerVariants = {

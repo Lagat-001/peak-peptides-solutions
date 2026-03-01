@@ -24,6 +24,8 @@ export interface Product {
   storage: string;
   form: string;
   solubility?: string;
+  casNumber?: string;
+  target?: string;
 
   // Pricing — salePrice = originalPrice - 40, set at data level
   originalPrice: number;
