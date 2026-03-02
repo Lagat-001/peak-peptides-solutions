@@ -3,6 +3,14 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ChatBot from "@/components/chat/ChatBot";
+import { products } from "@/lib/products";
+
+const chatIndex = products.map((p) => ({
+  name: p.name,
+  slug: p.slug,
+  category: p.category,
+}));
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,6 +53,7 @@ export default function RootLayout({
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <ChatBot productIndex={chatIndex} />
       </body>
     </html>
   );
