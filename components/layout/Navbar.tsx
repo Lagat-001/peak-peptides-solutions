@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -43,13 +44,23 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex flex-col leading-tight group">
-              <span className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
-                Peak Peptides Solutions
-              </span>
-              <span className="text-xs font-semibold text-blue-600 tracking-widest uppercase">
-                USA Sales
-              </span>
+            <Link href="/" className="flex items-center gap-3 group">
+              <Image
+                src="/images/logo.jpg"
+                alt="Peak Peptides Solutions USA Sales"
+                width={80}
+                height={80}
+                className="h-8 w-8 sm:h-10 sm:w-10 object-contain flex-shrink-0"
+                priority
+              />
+              <div className="flex flex-col leading-tight">
+                <span className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+                  Peak Peptides Solutions
+                </span>
+                <span className="text-xs font-semibold text-blue-600 tracking-widest uppercase">
+                  USA Sales
+                </span>
+              </div>
             </Link>
 
             {/* Desktop Nav */}
