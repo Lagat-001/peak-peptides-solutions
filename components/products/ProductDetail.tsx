@@ -178,10 +178,10 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                 </span>
               )}
               <Link
-                href="/contact"
+                href="/checkout"
                 className="inline-flex items-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-slate-900 rounded-xl hover:bg-slate-700 transition-colors"
               >
-                Contact to Order
+                Order with Crypto
               </Link>
             </div>
           </motion.div>
