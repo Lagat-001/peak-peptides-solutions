@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { sendContactEmail, type ContactFormState } from "@/app/contact/actions";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 20 },
@@ -11,25 +12,13 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.5, delay },
 });
 
+const initialState: ContactFormState = { status: "idle", message: "" };
+
 export default function ContactContent() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
-
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  }
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setSubmitted(true);
-  }
+  const [state, formAction, isPending] = useActionState(
+    sendContactEmail,
+    initialState
+  );
 
   const inputClass =
     "w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition";
@@ -159,7 +148,7 @@ export default function ContactContent() {
               {...fadeUp(0.15)}
               className="lg:col-span-3 bg-white border border-slate-200 rounded-2xl p-8 shadow-sm"
             >
-              {submitted ? (
+              {state.status === "success" ? (
                 /* Success state */
                 <div className="flex flex-col items-center justify-center min-h-64 text-center py-8">
                   <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mb-4">
@@ -190,7 +179,14 @@ export default function ContactContent() {
                 </div>
               ) : (
                 /* Form */
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form action={formAction} className="space-y-5">
+                  {/* Error banner */}
+                  {state.status === "error" && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                      {state.message}
+                    </div>
+                  )}
+
                   <div>
                     <label htmlFor="name" className={labelClass}>
                       Name
@@ -201,8 +197,6 @@ export default function ContactContent() {
                       type="text"
                       required
                       placeholder="Your name"
-                      value={form.name}
-                      onChange={handleChange}
                       className={inputClass}
                     />
                   </div>
@@ -217,8 +211,6 @@ export default function ContactContent() {
                       type="email"
                       required
                       placeholder="your@email.com"
-                      value={form.email}
-                      onChange={handleChange}
                       className={inputClass}
                     />
                   </div>
@@ -233,8 +225,6 @@ export default function ContactContent() {
                       type="text"
                       required
                       placeholder="What's this about?"
-                      value={form.subject}
-                      onChange={handleChange}
                       className={inputClass}
                     />
                   </div>
@@ -249,17 +239,16 @@ export default function ContactContent() {
                       rows={4}
                       required
                       placeholder="Describe your research inquiry..."
-                      value={form.message}
-                      onChange={handleChange}
                       className={inputClass}
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 rounded-xl transition-colors duration-200 cursor-pointer"
+                    disabled={isPending}
+                    className="w-full bg-blue-700 hover:bg-blue-800 disabled:bg-blue-400 text-white font-semibold py-3 rounded-xl transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed"
                   >
-                    Send Message
+                    {isPending ? "Sending…" : "Send Message"}
                   </button>
                 </form>
               )}
