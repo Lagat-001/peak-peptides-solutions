@@ -4,6 +4,7 @@ const quickLinks = [
   { label: "All Products", href: "/products" },
   { label: "Blog", href: "/blog" },
   { label: "Reviews", href: "/reviews" },
+  { label: "Return Policy", href: "/return-policy" },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
   { label: "Privacy Policy", href: "/privacy" },

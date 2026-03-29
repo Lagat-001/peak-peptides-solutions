@@ -18,6 +18,7 @@ interface CryptoOption {
   iconBg: string;
   iconText: string;
   iconLabel: string;
+  disabled?: boolean;
 }
 
 // ── Animation helpers ────────────────────────────────────────────────
@@ -47,13 +48,14 @@ const cryptos: CryptoOption[] = [
     iconBg: "bg-orange-500",
     iconText: "text-white",
     iconLabel: "₿",
+    disabled: true,
   },
   {
     id: "USDT",
     name: "Tether USD",
     symbol: "USDT",
     network: "TRON (TRC20)",
-    address: "TPlaceholderTRC20AddressBPPS",
+    address: "TEmgo7rVMVck1xuKWy5BACNvcePyEZFyg3",
     rate: 1,
     decimals: 2,
     iconBg: "bg-emerald-500",
@@ -65,7 +67,7 @@ const cryptos: CryptoOption[] = [
     name: "Ethereum",
     symbol: "ETH",
     network: "Ethereum (ERC20)",
-    address: "0xPlaceholderEthereumAddrBPPS",
+    address: "0xe299a1fa6599b09e5341b0f36172bb215c2cc81e",
     rate: 3200,
     decimals: 6,
     iconBg: "bg-blue-600",
@@ -123,7 +125,7 @@ function QRPlaceholder() {
           <rect x="24" y="50" width="6" height="6" rx="1" fill="#1e293b" />
         </svg>
       </div>
-      <p className="text-xs text-slate-400">Scan to Pay</p>
+      <p className="text-xs text-slate-400">Use the Copy button above to get the exact address</p>
     </div>
   );
 }
@@ -274,20 +276,30 @@ export default function CheckoutContent() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {cryptos.map((crypto) => {
                 const isSelected = selectedId === crypto.id;
+                const isDisabled = crypto.disabled === true;
                 return (
                   <button
                     key={crypto.id}
                     type="button"
+                    disabled={isDisabled}
                     onClick={() => {
+                      if (isDisabled) return;
                       setSelectedId(crypto.id);
                       setSent(false);
                     }}
-                    className={`rounded-2xl border-2 p-5 cursor-pointer transition-all duration-200 text-left ${
-                      isSelected
-                        ? "border-blue-600 bg-blue-50 ring-2 ring-blue-500/20"
-                        : "border-slate-200 bg-white hover:border-blue-400"
+                    className={`relative rounded-2xl border-2 p-5 transition-all duration-200 text-left ${
+                      isDisabled
+                        ? "border-slate-200 bg-slate-50 opacity-50 cursor-not-allowed"
+                        : isSelected
+                        ? "border-blue-600 bg-blue-50 ring-2 ring-blue-500/20 cursor-pointer"
+                        : "border-slate-200 bg-white hover:border-blue-400 cursor-pointer"
                     }`}
                   >
+                    {isDisabled && (
+                      <span className="absolute top-2 right-2 text-[10px] font-semibold text-slate-400 bg-slate-200 rounded-full px-2 py-0.5">
+                        Coming Soon
+                      </span>
+                    )}
                     <div
                       className={`w-10 h-10 rounded-xl ${crypto.iconBg} flex items-center justify-center mb-3`}
                     >
@@ -399,6 +411,38 @@ export default function CheckoutContent() {
                           </>
                         )}
                       </button>
+                    </div>
+                  </div>
+
+                  {/* ⚠ Address warning */}
+                  <div className="bg-red-950/60 border border-red-800/70 rounded-xl p-4 flex items-start gap-3">
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="shrink-0 mt-0.5 text-red-400"
+                      aria-hidden
+                    >
+                      <path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                      <path d="M12 9v4" />
+                      <path d="M12 17h.01" />
+                    </svg>
+                    <div className="text-sm space-y-1">
+                      <p className="font-bold text-red-300 uppercase tracking-wide text-xs">
+                        Important — Read Before Sending
+                      </p>
+                      <p className="text-red-200">
+                        Double-check the wallet address <strong>and network</strong> before sending. We are{" "}
+                        <strong>not responsible</strong> for funds sent to the wrong address or wrong network.
+                      </p>
+                      <p className="text-red-300 text-xs">
+                        Payment is confirmed manually within 1–2 business days.
+                      </p>
                     </div>
                   </div>
 
