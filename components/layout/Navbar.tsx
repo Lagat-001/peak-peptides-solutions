@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/contexts/CartContext";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -17,6 +18,7 @@ const navLinks = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -92,6 +94,24 @@ export default function Navbar() {
                 </svg>
                 <span className="sr-only">Chat on WhatsApp</span>
               </a>
+              {/* Cart icon */}
+              <Link
+                href="/cart"
+                className="relative flex items-center justify-center w-9 h-9 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+                title="View Cart"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5" aria-hidden>
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full bg-blue-700 text-white text-[10px] font-bold flex items-center justify-center px-0.5">
+                    {totalItems > 99 ? "99+" : totalItems}
+                  </span>
+                )}
+                <span className="sr-only">Cart ({totalItems})</span>
+              </Link>
               <Link
                 href="/products"
                 className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-blue-700 rounded-lg hover:bg-blue-800 transition-colors"
@@ -150,7 +170,19 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
+              <Link
+                href="/cart"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-between w-full px-3 py-2.5 text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-md transition-colors"
+              >
+                <span>Cart</span>
+                {totalItems > 0 && (
+                  <span className="min-w-[20px] h-5 rounded-full bg-blue-700 text-white text-[10px] font-bold flex items-center justify-center px-1">
+                    {totalItems}
+                  </span>
+                )}
+              </Link>
               <Link
                 href="/products"
                 onClick={() => setMobileOpen(false)}

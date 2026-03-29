@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useCart } from "@/contexts/CartContext";
 
 // ── Types ────────────────────────────────────────────────────────────
 type CryptoId = "BTC" | "USDT" | "ETH";
@@ -29,12 +30,7 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.5, delay },
 });
 
-// ── Static data ──────────────────────────────────────────────────────
-const cartItems = [
-  { name: "BPC-157", qty: 1, price: 55 },
-  { name: "Semaglutide", qty: 1, price: 215 },
-];
-const TOTAL = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+// cartItems and TOTAL are now dynamic — see component body
 
 const cryptos: CryptoOption[] = [
   {
@@ -132,6 +128,7 @@ function QRPlaceholder() {
 
 // ── Main component ───────────────────────────────────────────────────
 export default function CheckoutContent() {
+  const { items: cartItems, totalPrice: TOTAL, clearCart } = useCart();
   const [selectedId, setSelectedId] = useState<CryptoId | null>(null);
   const [copied, setCopied] = useState(false);
   const [sent, setSent] = useState(false);
@@ -156,6 +153,7 @@ export default function CheckoutContent() {
         "PP-" + Math.floor(100000 + Math.random() * 900000);
     }
     setSent(true);
+    clearCart();
   }
 
   return (
@@ -244,17 +242,26 @@ export default function CheckoutContent() {
               Order Summary
             </h2>
             <div className="space-y-2 mb-4">
-              {cartItems.map((item) => (
-                <div key={item.name} className="flex justify-between text-sm">
-                  <span className="text-slate-300">
-                    {item.name}{" "}
-                    <span className="text-slate-500">× {item.qty}</span>
-                  </span>
-                  <span className="text-white font-medium">
-                    ${item.price.toFixed(2)}
-                  </span>
-                </div>
-              ))}
+              {cartItems.length === 0 ? (
+                <p className="text-slate-400 text-sm">
+                  No items in cart.{" "}
+                  <Link href="/products" className="text-blue-400 underline hover:text-blue-300">
+                    Browse products
+                  </Link>
+                </p>
+              ) : (
+                cartItems.map((item) => (
+                  <div key={item.id} className="flex justify-between text-sm">
+                    <span className="text-slate-300 truncate pr-2">
+                      {item.name}{" "}
+                      <span className="text-slate-500">× {item.quantity}</span>
+                    </span>
+                    <span className="text-white font-medium shrink-0">
+                      ${(item.salePrice * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+                ))
+              )}
             </div>
             <div className="border-t border-slate-700 pt-3 space-y-2">
               <div className="flex justify-between text-sm">

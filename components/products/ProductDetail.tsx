@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils";
+import { useCart } from "@/contexts/CartContext";
 
 const categoryColors: Record<string, string> = {
   "GLP-1 Agonists": "bg-blue-100 text-blue-700",
@@ -45,9 +47,19 @@ interface ProductDetailProps {
 }
 
 export default function ProductDetail({ product }: ProductDetailProps) {
+  const { addItem } = useCart();
+  const [qty, setQty] = useState(1);
+  const [added, setAdded] = useState(false);
+
   const badgeClass =
     categoryColors[product.category] ?? "bg-slate-100 text-slate-600";
   const savings = product.originalPrice - product.salePrice;
+
+  function handleAddToCart() {
+    addItem(product, qty);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  }
 
   const activeSpecs = specsConfig.filter(({ key }) => {
     const val = product[key];
@@ -161,28 +173,87 @@ export default function ProductDetail({ product }: ProductDetailProps) {
               </div>
             )}
 
+            {/* Quantity selector */}
+            <div className="flex flex-col gap-2 pt-1">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
+                Quantity
+              </p>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  className="w-9 h-9 rounded-lg border border-slate-300 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-colors font-bold text-lg leading-none"
+                  aria-label="Decrease quantity"
+                >
+                  −
+                </button>
+                <span className="w-8 text-center text-base font-bold text-slate-900">
+                  {qty}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setQty((q) => q + 1)}
+                  className="w-9 h-9 rounded-lg border border-slate-300 flex items-center justify-center text-slate-700 hover:bg-slate-100 transition-colors font-bold text-lg leading-none"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+                <span className="text-sm text-slate-500 ml-1">
+                  × {formatPrice(product.salePrice)} ={" "}
+                  <strong className="text-slate-800">
+                    {formatPrice(product.salePrice * qty)}
+                  </strong>
+                </span>
+              </div>
+            </div>
+
             {/* Action buttons */}
-            <div className="flex flex-wrap gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 pt-1">
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className={`flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold rounded-xl transition-colors ${
+                  added
+                    ? "bg-emerald-600 text-white"
+                    : "bg-blue-700 text-white hover:bg-blue-800"
+                }`}
+              >
+                {added ? (
+                  <>
+                    <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4" aria-hidden>
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
+                    </svg>
+                    Added to Cart
+                  </>
+                ) : (
+                  <>
+                    <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4" aria-hidden>
+                      <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                    </svg>
+                    Add to Cart
+                  </>
+                )}
+              </button>
+              <Link
+                href="/cart"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 text-sm font-semibold text-slate-800 border border-slate-300 rounded-xl hover:bg-slate-50 transition-colors"
+              >
+                View Cart
+              </Link>
               {product.coaUrl ? (
                 <a
                   href={product.coaUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-blue-700 rounded-xl hover:bg-blue-800 transition-colors"
+                  className="inline-flex items-center gap-2 px-5 py-3 text-sm font-semibold text-slate-500 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
                 >
-                  Certificate of Analysis ↗
+                  COA ↗
                 </a>
               ) : (
                 <span className="inline-flex items-center gap-2 px-5 py-3 text-sm font-semibold text-slate-400 bg-slate-100 rounded-xl cursor-not-allowed select-none">
-                  COA — Coming Soon
+                  COA Soon
                 </span>
               )}
-              <Link
-                href="/checkout"
-                className="inline-flex items-center gap-2 px-5 py-3 text-sm font-semibold text-white bg-slate-900 rounded-xl hover:bg-slate-700 transition-colors"
-              >
-                Order with Crypto
-              </Link>
             </div>
           </motion.div>
         </div>

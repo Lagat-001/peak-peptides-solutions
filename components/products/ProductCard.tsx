@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils";
+import AddToCartButton from "./AddToCartButton";
 
 const categoryColors: Record<string, string> = {
   "GLP-1 Agonists": "bg-blue-100 text-blue-700",
@@ -72,13 +73,16 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
         </div>
 
-        {/* CTA */}
-        <Link
-          href={`/products/${product.slug}`}
-          className="mt-auto w-full text-center px-4 py-2.5 text-sm font-semibold text-white bg-blue-700 rounded-xl hover:bg-blue-800 transition-colors"
-        >
-          View Details
-        </Link>
+        {/* CTAs */}
+        <div className="mt-auto flex flex-col gap-2">
+          <AddToCartButton product={product} />
+          <Link
+            href={`/products/${product.slug}`}
+            className="w-full text-center px-4 py-2 text-sm font-medium text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-50 transition-colors"
+          >
+            View Details
+          </Link>
+        </div>
       </div>
     </div>
   );

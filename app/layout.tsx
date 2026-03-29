@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ChatBot from "@/components/chat/ChatBot";
+import Providers from "@/components/layout/Providers";
 import { products } from "@/lib/products";
 
 const chatIndex = products.map((p) => ({
@@ -50,10 +51,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <ChatBot productIndex={chatIndex} />
+        <Providers>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <ChatBot productIndex={chatIndex} />
+        </Providers>
       </body>
     </html>
   );
