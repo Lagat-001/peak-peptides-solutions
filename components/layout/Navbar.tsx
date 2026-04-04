@@ -51,7 +51,7 @@ export default function Navbar() {
             <Link href="/" className="flex items-center gap-3 group">
               <Image
                 src="/images/logo.jpg"
-                alt="Peak Peptides Solutions USA Sales"
+                alt="Peak Peptides Solutions USA"
                 width={80}
                 height={80}
                 className="h-8 w-8 sm:h-10 sm:w-10 object-contain flex-shrink-0"
@@ -62,7 +62,7 @@ export default function Navbar() {
                   Peak Peptides Solutions
                 </span>
                 <span className="text-xs font-semibold text-blue-600 tracking-widest uppercase">
-                  USA Sales
+                  USA
                 </span>
               </div>
             </Link>
