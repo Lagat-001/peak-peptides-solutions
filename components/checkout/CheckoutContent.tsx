@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
+import ComplianceDisclaimer from "@/components/shared/ComplianceDisclaimer";
 
 // ── Types ────────────────────────────────────────────────────────────
 type CryptoId = "BTC" | "USDT" | "ETH";
@@ -545,6 +546,11 @@ export default function CheckoutContent() {
             )}
           </AnimatePresence>
         </div>
+      </section>
+
+      {/* ── Compliance Disclaimer ─────────────────────────────── */}
+      <section className="py-10 px-4 sm:px-6 lg:px-8">
+        <ComplianceDisclaimer />
       </section>
 
       {/* ── Bottom Research Use Only Banner ───────────────────── */}

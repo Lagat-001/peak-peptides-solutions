@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { getFeaturedProducts } from "@/lib/products";
 import ProductCard from "@/components/products/ProductCard";
+import ComplianceDisclaimer from "@/components/shared/ComplianceDisclaimer";
 
 const container = {
   hidden: {},
@@ -77,6 +78,11 @@ export default function FeaturedProducts() {
             <span aria-hidden="true">→</span>
           </Link>
         </motion.div>
+
+        {/* Compliance disclaimer */}
+        <div className="mt-12">
+          <ComplianceDisclaimer />
+        </div>
       </div>
     </section>
   );

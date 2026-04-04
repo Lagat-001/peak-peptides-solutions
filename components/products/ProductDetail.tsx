@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
+import ComplianceDisclaimer from "@/components/shared/ComplianceDisclaimer";
 
 const categoryColors: Record<string, string> = {
   "GLP-1 Agonists": "bg-blue-100 text-blue-700",
@@ -269,6 +270,19 @@ export default function ProductDetail({ product }: ProductDetailProps) {
           <h2 className="text-xl font-bold text-slate-900 mb-5 pb-3 border-b border-slate-100">
             Research Overview
           </h2>
+          {/* GLP-1 specific clinical research note */}
+          {product.category === "GLP-1 Agonists" && (
+            <div className="mb-6 p-4 rounded-xl bg-blue-50 border border-blue-100">
+              <p className="text-sm text-blue-800 leading-relaxed">
+                <strong className="font-bold">Clinical Research Context.</strong>{" "}
+                {product.name} is a GLP-1 receptor agonist that has been
+                extensively studied for its effects on appetite regulation, blood
+                sugar control, and body weight in clinical research. It is sold
+                here strictly for laboratory and research purposes only.
+              </p>
+            </div>
+          )}
+
           <div className="prose prose-slate max-w-none text-sm sm:text-base text-slate-700 leading-relaxed whitespace-pre-line">
             {product.fullDescription}
           </div>
@@ -287,6 +301,11 @@ export default function ProductDetail({ product }: ProductDetailProps) {
             {product.disclaimer}
           </p>
         </motion.div>
+
+        {/* Sitewide compliance disclaimer */}
+        <div className="mt-8">
+          <ComplianceDisclaimer />
+        </div>
       </div>
     </div>
   );

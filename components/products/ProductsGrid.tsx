@@ -6,6 +6,7 @@ import { Product } from "@/types/product";
 import { getAllCategories } from "@/lib/products";
 import ProductCard from "@/components/products/ProductCard";
 import Pagination from "@/components/products/Pagination";
+import ComplianceDisclaimer from "@/components/shared/ComplianceDisclaimer";
 
 interface ProductsGridProps {
   products: Product[];
@@ -173,14 +174,10 @@ export default function ProductsGrid({ products }: ProductsGridProps) {
           </div>
         )}
 
-        {/* Research Disclaimer */}
-        <p className="text-xs text-slate-400 text-center mt-16 max-w-2xl mx-auto leading-relaxed">
-          <strong className="text-slate-500">Research Use Only.</strong> All
-          products sold by Peak Peptides Solutions USA Sales are strictly for
-          in-vitro and laboratory research purposes. Not for human or veterinary
-          use. These statements have not been evaluated by the FDA. Consult a
-          licensed professional before handling any research compound.
-        </p>
+        {/* Compliance Disclaimer */}
+        <div className="mt-16">
+          <ComplianceDisclaimer />
+        </div>
 
       </div>
     </section>

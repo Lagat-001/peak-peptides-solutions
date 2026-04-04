@@ -109,9 +109,10 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-8 text-xs text-slate-500"
+            className="mt-8 text-sm text-slate-400"
           >
-            For research use only. Not for human or veterinary use.
+            All products are sold strictly for research and laboratory use only.
+            Not for human consumption.
           </motion.p>
         </div>
       </div>
