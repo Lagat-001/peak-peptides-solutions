@@ -33,9 +33,33 @@ function esc(val: string): string {
   return val;
 }
 
+/** Shorten an ID to ≤50 chars, cutting at hyphen boundaries. */
+function shortenId(id: string, maxLen = 50): string {
+  if (id.length <= maxLen) return id;
+  // Truncate to maxLen then cut back to last hyphen for a clean break
+  const truncated = id.slice(0, maxLen);
+  const lastHyphen = truncated.lastIndexOf("-");
+  return lastHyphen > 10 ? truncated.slice(0, lastHyphen) : truncated;
+}
+
+// Build unique short IDs
+const shortIds = new Map<string, string>();
+const usedIds = new Set<string>();
+for (const p of products) {
+  let sid = shortenId(p.id);
+  if (usedIds.has(sid)) {
+    // Add numeric suffix to resolve collision
+    let i = 2;
+    while (usedIds.has(`${sid}-${i}`)) i++;
+    sid = `${sid}-${i}`;
+  }
+  usedIds.add(sid);
+  shortIds.set(p.id, sid);
+}
+
 const rows = products.map((p) =>
   [
-    esc(p.id),
+    esc(shortIds.get(p.id)!),
     esc(p.name),
     esc(p.shortDescription),
     esc(`${SITE}/products/${p.slug}`),
